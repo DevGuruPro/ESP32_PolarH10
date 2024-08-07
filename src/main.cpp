@@ -41,17 +41,20 @@ static void hr_notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic,
 
 static void accelero_notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic,uint8_t* pData,size_t length,bool isNotify) {
   if( pData[0] != 0x02 ) return;
-  int frame_type = pData[9];
-  Serial.println(frame_type);
   Serial.print("Acceleromter Data: ");
-  // if (length > 1) {   
+  int frame_type = pData[9];
+  Serial.print(frame_type,':');
+  for( int i = 10; pData[i] ; i++ )
+    Serial.print(pData[i]+' ');
+  Serial.println();
+  // if (length > 1) {
   //   int heartRate = pData[1];
   //   Serial.println(heartRate);
-  // }  
+  // }
 }
 
-bool connectToServer() {  
-    Serial.print("Forming a connection to ");  
+bool connectToServer() {
+    Serial.print("Forming a connection to ");
     Serial.println(myDevice->getAddress().toString().c_str());  
 
     BLEClient*  pClient  = BLEDevice::createClient();  
